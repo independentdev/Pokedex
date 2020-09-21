@@ -4,7 +4,12 @@ import android.util.Log;
 
 import uk.co.sooce.pokedex.data.repository.PokemonRepository;
 import uk.co.sooce.pokedex.model.Pokedex;
+import uk.co.sooce.pokedex.model.PokedexNode;
 import uk.co.sooce.pokedex.utils.RxSingleSchedulers;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
@@ -22,9 +27,13 @@ public class PokemonListViewModel extends ViewModel {
     private CompositeDisposable mDisposable;
     private RxSingleSchedulers mRxSingleSchedulers;
     private final MutableLiveData<Pokedex> mPokedex = new MutableLiveData<>();
+    private final MutableLiveData<List<PokedexNode>> mFilteredNodes = new MutableLiveData<>();
 
-    public LiveData<Pokedex> pokedex() {
+    public LiveData<Pokedex> getPokedex() {
         return mPokedex;
+    }
+    public LiveData<List<PokedexNode>> getFilteredNodes() {
+        return mFilteredNodes;
     }
 
     /**
@@ -49,12 +58,30 @@ public class PokemonListViewModel extends ViewModel {
 
                     @Override public void onSuccess(Pokedex pokedex) {
                         mPokedex.postValue(pokedex);
+                        mFilteredNodes.postValue(pokedex.getResults());
                     }
 
                     @Override public void onError(Throwable e) {
                         Log.e(LOG_TAG, "Error occurred on fetch", e);
                     }
                 }));
+    }
+
+    public void refreshFilter(String query) {
+        if (mPokedex.getValue() == null)
+            return;
+
+        if (query == null || query.length() == 0) {
+            mFilteredNodes.postValue(mPokedex.getValue().getResults());
+        } else
+        {
+            List<PokedexNode> nodeList = new ArrayList<>();
+            for (PokedexNode node : Objects.requireNonNull(mPokedex.getValue()).getResults()) {
+                if (node.getName().contains(query))
+                    nodeList.add(node);
+            }
+            mFilteredNodes.postValue(nodeList);
+        }
     }
 
 }

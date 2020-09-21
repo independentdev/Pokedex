@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.jetbrains.annotations.NotNull;
-
 import uk.co.sooce.pokedex.R;
 import uk.co.sooce.pokedex.model.Pokedex;
 import uk.co.sooce.pokedex.model.PokedexNode;
@@ -31,7 +29,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         mPokemonClickListener = clickListener;
     }
 
-    @NotNull @Override
+    @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.pokemon_item, parent, false);
@@ -53,11 +51,11 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         return mValues.size();
     }
 
-    public void setLiveData(LiveData<Pokedex> data, LifecycleOwner lifecycleOwner) {
+    public void setLiveData(LiveData<List<PokedexNode>> data, LifecycleOwner lifecycleOwner) {
         data.observe(lifecycleOwner, pokedex-> {
             if (pokedex != null) {
                 mValues.clear();
-                mValues.addAll(pokedex.getResults());
+                mValues.addAll(pokedex);
                 notifyDataSetChanged();
             }
         });
@@ -81,7 +79,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             view.setOnClickListener(this);
         }
 
-        @NotNull @Override
+        @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
         }

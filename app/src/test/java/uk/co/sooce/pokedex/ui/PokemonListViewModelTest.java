@@ -43,13 +43,12 @@ public class PokemonListViewModelTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         pokemonListViewModel = new PokemonListViewModel(pokemonRepository, RxSingleSchedulers.TEST_SCHEDULER);
-        pokemonListViewModel.pokedex().observeForever(pokedexObserver);
+        pokemonListViewModel.getPokedex().observeForever(pokedexObserver);
     }
 
     @Test
     public void testFetchPokemonList() {
-
-        Pokedex dummyPokedex = new Pokedex(0);
+        Pokedex dummyPokedex = new Pokedex(1);
         Mockito.when(pokemonRepository.fetchRemotePokemons(100, 0)).thenReturn(Single.just(dummyPokedex));
         pokemonListViewModel.fetchRemotePokemons();
         Mockito.verify(pokedexObserver).onChanged(dummyPokedex);
