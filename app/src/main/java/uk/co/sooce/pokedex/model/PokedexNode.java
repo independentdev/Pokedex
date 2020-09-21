@@ -38,9 +38,7 @@ public class PokedexNode {
     }
 
     public String getSpriteUrl() {
-        String spriteUrl = POKE_IMAGE_URL_PREFIX + getId() + POKE_IMAGE_URL_SUFFIX;
-        Log.d("POKEMON", spriteUrl);
-        return spriteUrl;
+        return POKE_IMAGE_URL_PREFIX + getId() + POKE_IMAGE_URL_SUFFIX;
     }
 
     public int getId() {
