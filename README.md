@@ -23,7 +23,7 @@ This project requires the following
 ## Installation
 Clone this repository and import into **Android Studio**
 ```bash
-git clone git@github.com:ozgurm/pokedex.git
+git clone git@github.com:independentdev/pokedex.git
 ```
 
 ## Running
@@ -42,4 +42,4 @@ From Android Studio:
 Project contains Unit test with JUnit and Mockito, including samples for a model and viewmodel testing 
 
 ## Developed by
-Ozgur Meliye - meliye@gmail.com
+Ozgur Meliye
